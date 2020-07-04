@@ -12,7 +12,20 @@
   min-height: 400ox;
 }
 
+.orange{
+  color: orange;
+}
+
 .row-header{
   margin: 0px auto;
   padding: opx auto;
+}
+
+.movie-rate{
+  border-top: orange;
+  font-size: 2em;
+}
+
+.click{
+  cursor: pointer;
 }

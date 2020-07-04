@@ -15,12 +15,18 @@ class App extends Component {
   }
 
 
-  movieClick=(movie)=>{
-    this.setState({selectedMovie:movie})
+  movieUpdated=movie =>{
+    this.componentDidMount();
+    this.setState({selectedMovie:movie});
+  }
+
+  movieDeleted=selMovies =>{
+    this.setState({selectedMovie:null});
+    this.componentDidMount();
   }
 
   componentDidMount(){
-    fetch('http://127.0.0.1:8000/api/movie/',{
+    fetch(`${process.env.REACT_APP_API_URL}/api/movie/`,{
       method: 'GET',
       headers: {
         'Authorization': 'Token 996df406ea6d010db63de0a8c1893ab0e6261948'
@@ -37,10 +43,10 @@ class App extends Component {
         <div className="container">
           <div className="row row-content">
             <div className="col-sm-5">
-              <MovieList onClick={(movie)=>{this.movieClick(movie)}} movies={this.state.movie}/>
+              <MovieList movieClicked={(movie)=>{this.movieUpdated(movie)}} movies={this.state.movie} deleteMovie={(movie)=> {this.movieDeleted(movie)}} />
             </div>
             <div className="col-sm-7">
-              <MovieDetails movie={this.state.selectedMovie}/>
+              <MovieDetails movie={this.state.selectedMovie} updateMovie={(movie)=>{this.movieUpdated(movie)}} />
             </div>
           </div>
         </div>        
