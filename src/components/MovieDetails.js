@@ -15,7 +15,7 @@ class MovieDetails extends Component{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Token 996df406ea6d010db63de0a8c1893ab0e6261948'
+                'Authorization': `Token ${this.props.token}`
             },
             body: JSON.stringify({rating:star+1})
             }).then( resp => resp.json())
@@ -28,11 +28,24 @@ class MovieDetails extends Component{
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Token 996df406ea6d010db63de0a8c1893ab0e6261948'
+                'Authorization': `Token ${this.props.token}`
             },
             }).then( resp => resp.json())
             .then( res => this.props.updateMovie(res))
             .catch(error => console.log(error))        
+    }
+    removeClick = (movie) =>{
+        fetch(`${process.env.REACT_APP_API_URL}/api/movie/${movie.id}`,{
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${this.props.token}`
+            },
+            }).then( res => this.props.deleteMovie(movie))
+            .catch(error => console.log(error));
+    }
+    editClick = (movie) =>{
+        this.props.editMovie(movie)
     }
     
     render(){
@@ -42,6 +55,14 @@ class MovieDetails extends Component{
                 {movie ? (
                     <div>
                         <h2>{movie.title}</h2>
+                        <div className="row">
+                            <div className="col-sm-2">
+                                <FontAwesome className="click" name="edit" onClick={()=>{this.editClick(movie)}}/>
+                            </div>
+                            <div className="col-sm-2">
+                                <FontAwesome className="click" name="trash" onClick={()=>{this.removeClick(movie)}}/>
+                            </div>
+                        </div>                        
                         {[...Array(5)].map((e,i) => {
                             return <FontAwesome name="star" key={i} className={movie.avg_rating>i ? "orange":"" }/>
                         })}
